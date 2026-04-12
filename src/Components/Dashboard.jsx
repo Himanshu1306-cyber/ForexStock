@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 
 function Dashboard() {
-  const forexData = useForex("INR/USD,JPY/USD,GBP/USD,EUR/USD,BTC/USD,ETH/USD"); // Fetching multiple pairs
+  const forexData = useForex("INR/USD,JPY/USD,GBP/USD,EUR/USD,BTC/USD,ETH/USD");
   const navigate = useNavigate(); 
-  const [searchTerm, setSearchTerm] = useState(""); // Search bar logic
+  const [searchTerm, setSearchTerm] = useState(""); 
 
-  // Filter logic for search
+  
   const filteredPairs = Object.keys(forexData).filter(pair => 
     pair.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -15,7 +15,7 @@ function Dashboard() {
   return (
     <div style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
       
-      {/* Header Section from Screenshot 2 */}
+      
       <div style={{ marginBottom: '60px', textAlign: 'left' }}>
         <h1 style={{ fontSize: '3.5rem', fontWeight: '800', letterSpacing: '-2px', margin: 0 }}>
           THE PEOPLE’S <br /> <span style={{ color: '#10b981' }}>STOCK MARKET</span>
@@ -25,7 +25,7 @@ function Dashboard() {
         </p>
       </div>
 
-      {/* Search Bar - Professional Look */}
+    
       <div style={{ marginBottom: '40px' }}>
         <input 
           type="text" 
@@ -46,7 +46,7 @@ function Dashboard() {
         />
       </div>
 
-      {/* Grid Layout for Cards (Screenshot 1 Style) */}
+     
       <div style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
@@ -78,8 +78,7 @@ function Dashboard() {
               e.currentTarget.style.boxShadow = 'none';
             }}
           >
-            {/* Card Content - Exact Style of Screenshot 1 */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
+            <div style={{ marginBottom: '40px' }}>
               <span style={{ fontSize: '1.2rem', fontWeight: '500', color: '#fff' }}>{pair.split('/')[0]}</span>
               <span style={{ fontSize: '0.9rem', color: '#10b981', background: 'rgba(16,185,129,0.1)', padding: '4px 12px', borderRadius: '20px' }}>
                 ↑ Live
@@ -93,7 +92,7 @@ function Dashboard() {
               </h2>
             </div>
 
-            {/* Visual Mini Chart Line (Static Decoration like Screenshot 1) */}
+           
             <svg width="100" height="30" viewBox="0 0 100 30" style={{ position: 'absolute', right: '30px', bottom: '80px' }}>
               <path d="M0 20 Q 25 5, 50 20 T 100 15" fill="none" stroke="#10b981" strokeWidth="2" />
             </svg>
@@ -108,4 +107,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Dashboard; 

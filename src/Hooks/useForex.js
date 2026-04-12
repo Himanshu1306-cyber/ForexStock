@@ -5,7 +5,7 @@ function useForex(symbol) {
     const [data ,setData] = useState({});
     useEffect(() => {
             const interval = setInterval(() => {
-                fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=C8VPPAMLYVWQ3XLK`)
+                fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=U2RYQ94C2Y9DZAND`)
                     .then(response => response.json())
                     .then((res) => setData(res))
             }, 30000);
