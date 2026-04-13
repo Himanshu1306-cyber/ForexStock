@@ -6,7 +6,7 @@ import Dashboard from "./Components/Dashboard";
 
 function App() {
   return (
-    <BrowserRouter>
+<BrowserRouter basename="/ForexStock">
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/chart/:symbol" element={<Chart />} /> 

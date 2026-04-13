@@ -3,18 +3,23 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 
 function Dashboard() {
-  const forexData = useForex("INR/USD,JPY/USD,GBP/USD,EUR/USD,BTC/USD,ETH/USD");
+  // 1. Destructure data and error from the hook
+  const { data, error } = useForex("INR/USD,JPY/USD,BTC/USD,ETH/USD");
   const navigate = useNavigate(); 
   const [searchTerm, setSearchTerm] = useState(""); 
 
+  // 2. Safe check: If data is null yet, use an empty object
+  const pairs = data ? Object.keys(data) : [];
   
-  const filteredPairs = Object.keys(forexData).filter(pair => 
+  const filteredPairs = pairs.filter(pair => 
     pair.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // 3. Optional: Handle Error state
+  if (error) return <div style={{color: 'white', padding: '50px'}}>Error: {error}</div>;
+
   return (
-    <div style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-      
+    <div style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto', color: 'white' }}>
       
       <div style={{ marginBottom: '60px', textAlign: 'left' }}>
         <h1 style={{ fontSize: '3.5rem', fontWeight: '800', letterSpacing: '-2px', margin: 0 }}>
@@ -25,7 +30,6 @@ function Dashboard() {
         </p>
       </div>
 
-    
       <div style={{ marginBottom: '40px' }}>
         <input 
           type="text" 
@@ -46,13 +50,12 @@ function Dashboard() {
         />
       </div>
 
-     
       <div style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
         gap: '25px' 
       }}>
-        {filteredPairs.map((pair) => (
+        {filteredPairs.length > 0 ? filteredPairs.map((pair) => (
           <div 
             key={pair}
             onClick={() => navigate(`/chart/${pair.replace('/', '_')}`)} 
@@ -64,23 +67,20 @@ function Dashboard() {
               border: '1px solid rgba(255,255,255,0.05)',
               backdropFilter: 'blur(20px)',
               transition: 'all 0.3s ease',
-              position: 'relative',
-              overflow: 'hidden'
+              position: 'relative'
             }}
             onMouseOver={(e) => {
               e.currentTarget.style.transform = 'translateY(-10px)';
               e.currentTarget.style.borderColor = '#10b981';
-              e.currentTarget.style.boxShadow = '0 20px 40px rgba(16, 185, 129, 0.1)';
             }}
             onMouseOut={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
               e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)';
-              e.currentTarget.style.boxShadow = 'none';
             }}
           >
             <div style={{ marginBottom: '40px' }}>
-              <span style={{ fontSize: '1.2rem', fontWeight: '500', color: '#fff' }}>{pair.split('/')[0]}</span>
-              <span style={{ fontSize: '0.9rem', color: '#10b981', background: 'rgba(16,185,129,0.1)', padding: '4px 12px', borderRadius: '20px' }}>
+              <span style={{ fontSize: '1.2rem', fontWeight: '500', color: '#fff' }}>{pair}</span>
+              <span style={{ marginLeft: '10px', fontSize: '0.9rem', color: '#10b981', background: 'rgba(16,185,129,0.1)', padding: '4px 12px', borderRadius: '20px' }}>
                 ↑ Live
               </span>
             </div>
@@ -88,23 +88,21 @@ function Dashboard() {
             <div style={{ marginBottom: '10px' }}>
               <span style={{ color: '#888', fontSize: '0.9rem' }}>Market Price</span>
               <h2 style={{ fontSize: '2.5rem', fontWeight: '700', margin: '5px 0' }}>
-                {forexData[pair]?.price ? parseFloat(forexData[pair].price).toFixed(4) : "---"}
+                {/* 4. Use 'pair' to access the data, and check if it exists */}
+                {data[pair]?.price ? parseFloat(data[pair].price).toFixed(4) : "---"}
               </h2>
             </div>
-
-           
-            <svg width="100" height="30" viewBox="0 0 100 30" style={{ position: 'absolute', right: '30px', bottom: '80px' }}>
-              <path d="M0 20 Q 25 5, 50 20 T 100 15" fill="none" stroke="#10b981" strokeWidth="2" />
-            </svg>
 
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '15px', marginTop: '20px' }}>
               <span style={{ fontSize: '0.8rem', color: '#555' }}>Click to view analysis →</span>
             </div>
           </div>
-        ))}
+        )) : (
+          <p style={{ color: '#555' }}>Loading market data...</p>
+        )}
       </div>
     </div>
   );
 }
 
-export default Dashboard; 
+export default Dashboard;
