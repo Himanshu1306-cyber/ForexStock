@@ -1,4 +1,4 @@
-import useForex from '../hooks/useForex';
+import useForex from '../Hooks/useForex';
 import React, { useState } from 'react'; 
 import { useNavigate } from 'react-router-dom'; 
 
